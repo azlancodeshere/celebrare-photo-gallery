@@ -21,7 +21,7 @@ const PhotoCard = memo(({ photo, isFavourite, onToggle, priority }) => {
     onToggle(photo.id);
   };
 
-  const avatarHue = (photo.author.charCodeAt(0) * 37) % 360;
+  const avatarColorIndex = (photo.author.charCodeAt(0) * 37) % 12;
 
   return (
     <article
@@ -79,8 +79,7 @@ const PhotoCard = memo(({ photo, isFavourite, onToggle, priority }) => {
       <div className="px-4 py-3.5 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5 flex-1 min-w-0">
           <div
-            className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
-            style={{ background: `hsl(${avatarHue}, 55%, 42%)` }}
+            className={`avatar-color-${avatarColorIndex} shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white`}
             aria-hidden="true"
           >
             {photo.author.charAt(0).toUpperCase()}
