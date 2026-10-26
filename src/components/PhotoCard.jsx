@@ -12,7 +12,7 @@ const HeartOutline = () => (
   </svg>
 );
 
-const PhotoCard = memo(({ photo, isFavourite, onToggle }) => {
+const PhotoCard = memo(({ photo, isFavourite, onToggle, priority }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [heartAnimating, setHeartAnimating] = useState(false);
 
@@ -24,72 +24,75 @@ const PhotoCard = memo(({ photo, isFavourite, onToggle }) => {
   const imgSrc = `https://picsum.photos/id/${photo.id}/600/400`;
 
   return (
-    <article className="photo-card relative rounded-2xl overflow-hidden group" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-
+    <article
+      className="photo-card relative rounded-2xl overflow-hidden group"
+      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
+      aria-label={`Photo by ${photo.author}`}
+    >
       {/* ── Image Area ── */}
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '4/3' }}>
+      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '3/2' }}>
 
-        {/* Skeleton */}
+        {/* Skeleton overlay */}
         <div
           className="skeleton absolute inset-0 z-10 transition-opacity duration-700"
           style={{ opacity: imgLoaded ? 0 : 1, pointerEvents: 'none' }}
+          aria-hidden="true"
         />
 
-        {/* Image */}
+        {/* Image — always in DOM so onLoad always fires */}
         <img
           src={imgSrc}
           alt={`Photo by ${photo.author}`}
-          loading="lazy"
+          width={600}
+          height={400}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchpriority={priority ? 'high' : 'low'}
+          decoding="async"
           onLoad={() => setImgLoaded(true)}
           onError={() => setImgLoaded(true)}
-          className="w-full h-full object-cover img-reveal"
+          className="img-reveal w-full h-full object-cover"
           style={{
             opacity: imgLoaded ? 1 : 0,
-            transform: imgLoaded ? 'scale(1)' : 'scale(1.05)',
+            transform: imgLoaded ? 'scale(1)' : 'scale(1.04)',
           }}
         />
 
-        {/* Hover overlay gradient */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 z-20"
-          style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.75) 100%)' }}
+        {/* Hover gradient */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20"
+          style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.7) 100%)' }}
+          aria-hidden="true"
         />
 
-        {/* Favourite badge — top left */}
+        {/* Favourite badge */}
         {isFavourite && (
           <div className="badge-in absolute top-3 left-3 z-30">
             <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-white"
-              style={{ background: 'linear-gradient(135deg,#db2777,#9333ea)', boxShadow: '0 4px 14px rgba(219,39,119,0.5)' }}>
+              style={{ background: 'linear-gradient(135deg,#db2777,#9333ea)', boxShadow: '0 4px 12px rgba(219,39,119,0.45)' }}>
               <HeartFilled />
               Saved
             </span>
           </div>
         )}
 
-        {/* Heart button — top right */}
+        {/* Heart button (desktop: appears on hover) */}
         <button
           id={`fav-btn-${photo.id}`}
           onClick={handleToggle}
           onAnimationEnd={() => setHeartAnimating(false)}
           aria-label={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
           aria-pressed={isFavourite}
-          className={`
-            absolute top-3 right-3 z-30
-            w-9 h-9 rounded-full flex items-center justify-center
-            cursor-pointer transition-all duration-200
-            ${heartAnimating ? 'heart-pop' : ''}
-            ${isFavourite
-              ? 'text-pink-400'
-              : 'text-white/70 hover:text-pink-400 opacity-0 group-hover:opacity-100'
-            }
-          `}
+          className={[
+            'absolute top-3 right-3 z-30',
+            'w-9 h-9 rounded-full flex items-center justify-center cursor-pointer',
+            'transition-all duration-200',
+            heartAnimating ? 'heart-pop' : '',
+            isFavourite ? 'text-pink-400' : 'text-white/70 hover:text-pink-400 opacity-0 group-hover:opacity-100',
+          ].join(' ')}
           style={{
-            background: isFavourite
-              ? 'rgba(236,72,153,0.2)'
-              : 'rgba(0,0,0,0.45)',
-            backdropFilter: 'blur(8px)',
-            border: isFavourite
-              ? '1px solid rgba(236,72,153,0.5)'
-              : '1px solid rgba(255,255,255,0.15)',
+            background: isFavourite ? 'rgba(236,72,153,0.2)' : 'rgba(0,0,0,0.45)',
+            backdropFilter: 'blur(6px)',
+            border: isFavourite ? '1px solid rgba(236,72,153,0.45)' : '1px solid rgba(255,255,255,0.12)',
           }}
         >
           {isFavourite ? <HeartFilled /> : <HeartOutline />}
@@ -98,42 +101,41 @@ const PhotoCard = memo(({ photo, isFavourite, onToggle }) => {
 
       {/* ── Card Footer ── */}
       <div className="px-4 py-3.5 flex items-center justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          {/* Author avatar circle + name */}
-          <div className="flex items-center gap-2.5">
-            <div className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
-              style={{
-                background: `hsl(${(photo.author.charCodeAt(0) * 37) % 360}, 60%, 45%)`,
-              }}>
-              {photo.author.charAt(0).toUpperCase()}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-sm font-semibold leading-tight truncate" title={photo.author}>
-                {photo.author}
-              </p>
-              <p className="text-slate-500 text-xs mt-0.5">
-                {photo.width} × {photo.height}
-              </p>
-            </div>
+        <div className="flex items-center gap-2.5 flex-1 min-w-0">
+          {/* Generated colour avatar */}
+          <div
+            className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+            style={{ background: `hsl(${(photo.author.charCodeAt(0) * 37) % 360}, 55%, 42%)` }}
+            aria-hidden="true"
+          >
+            {photo.author.charAt(0).toUpperCase()}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-sm font-semibold truncate" title={photo.author}>
+              {photo.author}
+            </p>
+            <p className="text-slate-600 text-xs">
+              {photo.width} × {photo.height}
+            </p>
           </div>
         </div>
 
-        {/* Mobile-visible heart (always visible, not just on hover) */}
+        {/* Mobile heart (always visible) */}
         <button
           onClick={handleToggle}
           onAnimationEnd={() => setHeartAnimating(false)}
-          className={`
-            sm:hidden flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center
-            cursor-pointer transition-all duration-200
-            ${heartAnimating ? 'heart-pop' : ''}
-            ${isFavourite ? 'text-pink-400' : 'text-slate-500'}
-          `}
-          style={{
-            background: isFavourite ? 'rgba(236,72,153,0.15)' : 'rgba(255,255,255,0.05)',
-            border: isFavourite ? '1px solid rgba(236,72,153,0.3)' : '1px solid rgba(255,255,255,0.08)',
-          }}
           aria-label={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
           aria-pressed={isFavourite}
+          className={[
+            'sm:hidden flex-shrink-0 w-8 h-8 rounded-full',
+            'flex items-center justify-center cursor-pointer transition-all duration-200',
+            isFavourite ? 'text-pink-400' : 'text-slate-500',
+            heartAnimating ? 'heart-pop' : '',
+          ].join(' ')}
+          style={{
+            background: isFavourite ? 'rgba(236,72,153,0.12)' : 'rgba(255,255,255,0.04)',
+            border: isFavourite ? '1px solid rgba(236,72,153,0.3)' : '1px solid rgba(255,255,255,0.07)',
+          }}
         >
           {isFavourite ? <HeartFilled /> : <HeartOutline />}
         </button>

@@ -280,12 +280,13 @@ const Gallery = () => {
                 id="photo-grid"
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
               >
-                {displayedPhotos.map((photo) => (
+                {displayedPhotos.map((photo, index) => (
                   <PhotoCard
                     key={photo.id}
                     photo={photo}
                     isFavourite={favourites.has(photo.id)}
                     onToggle={handleToggleFavourite}
+                    priority={index < 4}
                   />
                 ))}
               </div>

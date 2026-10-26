@@ -5,23 +5,31 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- SEO Meta Tags -->
-    <title>Photo Gallery — Browse & Favourite Beautiful Photos</title>
-    <meta
-      name="description"
-      content="A responsive photo gallery built with React and Vite. Browse 30 stunning photos from Picsum Photos, search by photographer, and save your favourites."
-    />
+    <title>Photo Gallery — Browse &amp; Favourite Beautiful Photos</title>
+    <meta name="description" content="A responsive photo gallery built with React and Vite. Browse 30 stunning photos from Picsum Photos, search by photographer, and save your favourites." />
     <meta name="keywords" content="photo gallery, react, picsum, photography, favourites" />
     <meta name="author" content="Photo Gallery App" />
 
-    <!-- Open Graph -->
     <meta property="og:title" content="Photo Gallery" />
     <meta property="og:description" content="Browse and favourite beautiful photos from Picsum Photos." />
     <meta property="og:type" content="website" />
 
-    <!-- Preconnect to Google Fonts -->
+    <!-- Preconnect first, then load font as non-render-blocking stylesheet -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" />
+    </noscript>
+
+    <!-- Preconnect to Picsum so image requests start early -->
+    <link rel="preconnect" href="https://picsum.photos" />
+    <link rel="preconnect" href="https://fastly.picsum.photos" />
   </head>
   <body>
     <div id="root"></div>
