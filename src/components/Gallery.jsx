@@ -57,88 +57,52 @@ const Gallery = () => {
   const favouriteCount = favourites.size;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#07090f', position: 'relative', zIndex: 1 }}>
+    <div className="relative min-h-screen bg-[#07090f] z-[1]">
 
-      {/* ── Ambient background blobs ─────────────────────────── */}
-      <div aria-hidden="true" style={{ position: 'fixed', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        <div style={{
-          position: 'absolute', top: '-20%', left: '50%', transform: 'translateX(-50%)',
-          width: '70vw', height: '70vw', maxWidth: 900,
-          background: 'radial-gradient(ellipse, rgba(109,40,217,0.18) 0%, transparent 65%)',
-          filter: 'blur(40px)',
-        }} />
-        <div style={{
-          position: 'absolute', top: '30%', right: '-10%',
-          width: '50vw', height: '50vw', maxWidth: 600,
-          background: 'radial-gradient(ellipse, rgba(219,39,119,0.1) 0%, transparent 65%)',
-          filter: 'blur(40px)',
-        }} />
-        <div style={{
-          position: 'absolute', bottom: '10%', left: '-5%',
-          width: '40vw', height: '40vw', maxWidth: 500,
-          background: 'radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 65%)',
-          filter: 'blur(40px)',
-        }} />
+      <div aria-hidden="true" className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="blob blob-top" />
+        <div className="blob blob-right" />
+        <div className="blob blob-left" />
       </div>
 
-      <div style={{ position: 'relative', zIndex: 1, maxWidth: 1400, margin: '0 auto', padding: '0 24px 80px' }}>
+      <div className="relative z-[1] max-w-[1400px] mx-auto px-6 pb-20">
 
-        {/* ══════════════════════════════════════════════════════
-            HERO HEADER
-        ══════════════════════════════════════════════════════ */}
-        <header className="fade-up" style={{ textAlign: 'center', paddingTop: 72, paddingBottom: 56 }}>
-
-          {/* Top label */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '6px 14px', borderRadius: 99,
-              background: 'rgba(124,58,237,0.12)',
-              border: '1px solid rgba(124,58,237,0.25)',
-              fontSize: 12, fontWeight: 600, letterSpacing: '0.06em',
-              color: '#a78bfa', textTransform: 'uppercase',
-            }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#7c3aed', boxShadow: '0 0 8px #7c3aed', display: 'inline-block' }} />
+        <header className="fade-up text-center pt-16 pb-14">
+          <div className="flex justify-center mb-6">
+            <span className="hero-label">
+              <span className="hero-dot" />
               Picsum Photos
             </span>
           </div>
 
-          {/* Title */}
-          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: 900, lineHeight: 1.05, margin: 0 }}>
-            <span style={{ color: '#f8fafc' }}>Discover </span>
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight text-slate-50 tracking-tight">
+            Discover{' '}
             <span className="gradient-text">Beautiful</span>
-            <br />
-            <span style={{ color: '#f8fafc' }}>Photography</span>
+            <br />Photography
           </h1>
 
-          <p className="fade-up-d1" style={{ marginTop: 20, color: '#475569', fontSize: 16, fontWeight: 400, maxWidth: 480, margin: '20px auto 0' }}>
+          <p className="fade-up-d1 mt-5 text-slate-600 text-base max-w-md mx-auto">
             Browse 30 curated photos, search by photographer, and save your favourites.
           </p>
 
-          {/* Stats row */}
           {!loading && !error && (
-            <div className="fade-up-d2" style={{ display: 'flex', justifyContent: 'center', gap: 32, marginTop: 36 }}>
+            <div className="fade-up-d2 flex justify-center gap-10 mt-10">
               {[
                 { label: 'Photos', value: photos.length },
                 { label: 'Photographers', value: [...new Set(photos.map(p => p.author))].length },
                 { label: 'Saved', value: favouriteCount },
               ].map(({ label, value }) => (
-                <div key={label} style={{ textAlign: 'center' }}>
-                  <p style={{ fontSize: 28, fontWeight: 800, color: '#f8fafc', margin: 0, lineHeight: 1 }}>{value}</p>
-                  <p style={{ fontSize: 12, color: '#475569', fontWeight: 500, marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</p>
+                <div key={label} className="text-center">
+                  <p className="text-3xl font-extrabold text-slate-50 leading-none">{value}</p>
+                  <p className="text-xs text-slate-600 font-medium mt-1 uppercase tracking-widest">{label}</p>
                 </div>
               ))}
             </div>
           )}
         </header>
 
-        {/* ══════════════════════════════════════════════════════
-            CONTROLS BAR (Search + Tabs)
-        ══════════════════════════════════════════════════════ */}
         {!loading && !error && (
-          <div className="fade-up-d3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 48 }}>
-
-            {/* Search */}
+          <div className="fade-up-d3 flex flex-col items-center gap-4 mb-12">
             <SearchBar
               value={searchQuery}
               onChange={handleSearchChange}
@@ -146,67 +110,32 @@ const Gallery = () => {
               filteredCount={filteredPhotos.length}
             />
 
-            {/* Tabs */}
-            <div style={{
-              display: 'inline-flex', gap: 6, padding: 6, borderRadius: 16,
-              background: 'rgba(255,255,255,0.03)',
-              border: '1px solid rgba(255,255,255,0.06)',
-            }}>
-              {/* All tab */}
+            <div className="glass-surface inline-flex gap-1.5 p-1.5 rounded-2xl">
               <button
                 id="tab-all"
                 onClick={() => setActiveTab('all')}
-                className="cursor-pointer"
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  padding: '8px 18px', borderRadius: 10, border: 'none',
-                  fontSize: 13, fontWeight: 600, transition: 'all 0.2s',
-                  background: activeTab === 'all'
-                    ? 'linear-gradient(135deg,#7c3aed,#6d28d9)'
-                    : 'transparent',
-                  color: activeTab === 'all' ? '#fff' : '#64748b',
-                  boxShadow: activeTab === 'all' ? '0 4px 16px rgba(124,58,237,0.4)' : 'none',
-                }}
+                className={`flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer border-none outline-none ${activeTab === 'all' ? 'btn-violet text-white' : 'bg-transparent text-slate-500 hover:text-slate-300'}`}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" style={{ width: 15, height: 15 }}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
                 </svg>
                 All Photos
-                <span style={{
-                  padding: '1px 7px', borderRadius: 99, fontSize: 11, fontWeight: 700,
-                  background: activeTab === 'all' ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.06)',
-                  color: activeTab === 'all' ? '#fff' : '#64748b',
-                }}>
+                <span className={`tab-count ${activeTab === 'all' ? 'tab-count-on' : 'tab-count-off'}`}>
                   {photos.length}
                 </span>
               </button>
 
-              {/* Favourites tab */}
               <button
                 id="tab-favourites"
                 onClick={() => setActiveTab('favourites')}
-                className="cursor-pointer"
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  padding: '8px 18px', borderRadius: 10, border: 'none',
-                  fontSize: 13, fontWeight: 600, transition: 'all 0.2s',
-                  background: activeTab === 'favourites'
-                    ? 'linear-gradient(135deg,#db2777,#be185d)'
-                    : 'transparent',
-                  color: activeTab === 'favourites' ? '#fff' : '#64748b',
-                  boxShadow: activeTab === 'favourites' ? '0 4px 16px rgba(219,39,119,0.4)' : 'none',
-                }}
+                className={`flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer border-none outline-none ${activeTab === 'favourites' ? 'btn-pink text-white' : 'bg-transparent text-slate-500 hover:text-slate-300'}`}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style={{ width: 15, height: 15 }}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                   <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
                 </svg>
                 Favourites
                 {favouriteCount > 0 && (
-                  <span style={{
-                    padding: '1px 7px', borderRadius: 99, fontSize: 11, fontWeight: 700,
-                    background: activeTab === 'favourites' ? 'rgba(255,255,255,0.2)' : 'rgba(219,39,119,0.15)',
-                    color: activeTab === 'favourites' ? '#fff' : '#f472b6',
-                  }}>
+                  <span className={`tab-count ${activeTab === 'favourites' ? 'tab-count-on' : 'tab-count-fav'}`}>
                     {favouriteCount}
                   </span>
                 )}
@@ -215,53 +144,46 @@ const Gallery = () => {
           </div>
         )}
 
-        {/* ══════════════════════════════════════════════════════
-            STATES: Loading / Error / Empty
-        ══════════════════════════════════════════════════════ */}
         {loading && <LoadingSpinner />}
-        {!loading && error && <ErrorMessage message={error} onRetry={() => window.location.reload()} />}
 
-        {/* Empty favourites */}
+        {!loading && error && (
+          <ErrorMessage message={error} onRetry={() => window.location.reload()} />
+        )}
+
         {!loading && !error && activeTab === 'favourites' && displayedPhotos.length === 0 && (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '40vh', gap: 20 }}>
-            <div style={{ width: 72, height: 72, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(219,39,119,0.08)', border: '1px solid rgba(219,39,119,0.2)' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#f472b6" style={{ width: 32, height: 32 }}>
+          <div className="flex flex-col items-center justify-center gap-5 min-h-[40vh]">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center error-icon-bg" style={{ background: 'rgba(219,39,119,0.08)', border: '1px solid rgba(219,39,119,0.2)' }}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#f472b6" className="w-8 h-8">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
               </svg>
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <p style={{ color: '#f8fafc', fontWeight: 700, fontSize: 18, margin: 0 }}>No favourites yet</p>
-              <p style={{ color: '#475569', fontSize: 14, marginTop: 6 }}>Click the ♥ on any photo to save it here</p>
+            <div className="text-center">
+              <p className="text-slate-50 font-bold text-lg">No favourites yet</p>
+              <p className="text-slate-600 text-sm mt-1">Click the ♥ on any photo to save it here</p>
             </div>
           </div>
         )}
 
-        {/* No search results */}
         {!loading && !error && activeTab === 'all' && displayedPhotos.length === 0 && searchQuery && (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '40vh', gap: 16 }}>
-            <p style={{ color: '#f8fafc', fontWeight: 700, fontSize: 18 }}>No results for "{searchQuery}"</p>
-            <p style={{ color: '#475569', fontSize: 14 }}>Try a different photographer name</p>
+          <div className="flex flex-col items-center justify-center gap-4 min-h-[40vh]">
+            <p className="text-slate-50 font-bold text-lg">No results for &quot;{searchQuery}&quot;</p>
+            <p className="text-slate-600 text-sm">Try a different photographer name</p>
           </div>
         )}
 
-        {/* ══════════════════════════════════════════════════════
-            PHOTO GRID
-        ══════════════════════════════════════════════════════ */}
         {!loading && !error && displayedPhotos.length > 0 && (
           <>
-            {/* Result meta row */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-              <p style={{ color: '#334155', fontSize: 13, fontWeight: 500 }}>
+            <div className="flex items-center justify-between mb-6">
+              <p className="text-slate-700 text-sm font-medium">
                 {searchQuery
                   ? `${displayedPhotos.length} result${displayedPhotos.length !== 1 ? 's' : ''}`
                   : activeTab === 'favourites'
                     ? `${displayedPhotos.length} saved`
-                    : `${displayedPhotos.length} photos`
-                }
+                    : `${displayedPhotos.length} photos`}
               </p>
               {favouriteCount > 0 && activeTab === 'all' && (
-                <p style={{ color: '#f472b6', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style={{ width: 13, height: 13 }}>
+                <p className="text-pink-400 text-sm font-semibold flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
                     <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
                   </svg>
                   {favouriteCount} saved
@@ -269,17 +191,8 @@ const Gallery = () => {
               )}
             </div>
 
-            {/*
-              Responsive grid:
-              - Mobile  : 1 column
-              - Tablet  : 2 columns  (sm: 640px)
-              - Desktop : 4 columns  (lg: 1024px)
-            */}
             <main>
-              <div
-                id="photo-grid"
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
-              >
+              <div id="photo-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 {displayedPhotos.map((photo, index) => (
                   <PhotoCard
                     key={photo.id}
@@ -294,16 +207,11 @@ const Gallery = () => {
           </>
         )}
 
-        {/* ── Footer ── */}
         {!loading && !error && (
-          <footer style={{ textAlign: 'center', marginTop: 80 }}>
-            <p style={{ color: '#1e293b', fontSize: 12 }}>
+          <footer className="text-center mt-20">
+            <p className="text-slate-800 text-xs">
               Photos from{' '}
-              <a href="https://picsum.photos" target="_blank" rel="noopener noreferrer"
-                style={{ color: '#334155', transition: 'color 0.2s' }}
-                onMouseEnter={e => e.target.style.color = '#64748b'}
-                onMouseLeave={e => e.target.style.color = '#334155'}
-              >
+              <a href="https://picsum.photos" target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 transition-colors">
                 picsum.photos
               </a>
               {' '}· Built with React + Vite + Tailwind CSS
