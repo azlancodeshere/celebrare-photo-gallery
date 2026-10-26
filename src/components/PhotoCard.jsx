@@ -46,7 +46,7 @@ const PhotoCard = memo(({ photo, isFavourite, onToggle, priority }) => {
           width={600}
           height={400}
           loading={priority ? 'eager' : 'lazy'}
-          fetchpriority={priority ? 'high' : 'low'}
+          fetchPriority={priority ? 'high' : 'low'}
           decoding="async"
           onLoad={() => setImgLoaded(true)}
           onError={() => setImgLoaded(true)}
