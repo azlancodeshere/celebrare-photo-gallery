@@ -28,7 +28,7 @@ const PhotoCard = memo(({ photo, isFavourite, onToggle, priority }) => {
       className="photo-card glass-card relative rounded-2xl overflow-hidden group"
       aria-label={`Photo by ${photo.author}`}
     >
-      <div className="relative w-full overflow-hidden aspect-[3/2]">
+      <div className="relative w-full overflow-hidden aspect-3/2">
         <div
           className={`skeleton absolute inset-0 z-10 transition-opacity duration-700 ${imgLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
           aria-hidden="true"
@@ -79,7 +79,7 @@ const PhotoCard = memo(({ photo, isFavourite, onToggle, priority }) => {
       <div className="px-4 py-3.5 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5 flex-1 min-w-0">
           <div
-            className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+            className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
             style={{ background: `hsl(${avatarHue}, 55%, 42%)` }}
             aria-hidden="true"
           >
@@ -101,7 +101,7 @@ const PhotoCard = memo(({ photo, isFavourite, onToggle, priority }) => {
           aria-label={isFavourite ? 'Remove from favourites' : 'Add to favourites'}
           aria-pressed={isFavourite}
           className={[
-            'sm:hidden flex-shrink-0 w-8 h-8 rounded-full',
+            'sm:hidden shrink-0 w-8 h-8 rounded-full',
             'flex items-center justify-center cursor-pointer transition-all duration-200',
             isFavourite ? 'heart-footer-on text-pink-400' : 'heart-footer-off text-slate-500',
             heartAnimating ? 'heart-pop' : '',

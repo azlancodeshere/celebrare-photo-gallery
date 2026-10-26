@@ -57,7 +57,7 @@ const Gallery = () => {
   const favouriteCount = favourites.size;
 
   return (
-    <div className="relative min-h-screen bg-[#07090f] z-[1]">
+    <div className="relative min-h-screen bg-[#07090f] z-1">
 
       <div aria-hidden="true" className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="blob blob-top" />
@@ -65,7 +65,7 @@ const Gallery = () => {
         <div className="blob blob-left" />
       </div>
 
-      <div className="relative z-[1] max-w-[1400px] mx-auto px-6 pb-20">
+      <div className="relative z-1 max-w-350px mx-auto px-6 pb-20">
 
         <header className="fade-up text-center pt-16 pb-14">
           <div className="flex justify-center mb-6">

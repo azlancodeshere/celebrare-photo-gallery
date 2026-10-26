@@ -4,7 +4,7 @@ const SearchBar = memo(({ value, onChange, totalCount, filteredCount }) => {
   return (
     <div className="w-full max-w-xl mx-auto">
       <div className="glass-search search-input flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 flex-shrink-0 text-violet-500">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 shrink-0 text-violet-500">
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
         </svg>
 
@@ -21,7 +21,7 @@ const SearchBar = memo(({ value, onChange, totalCount, filteredCount }) => {
         />
 
         {value ? (
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             <span className="search-count tab-count text-xs font-semibold px-2 py-0.5 rounded-full">
               {filteredCount}/{totalCount}
             </span>
@@ -37,7 +37,7 @@ const SearchBar = memo(({ value, onChange, totalCount, filteredCount }) => {
             </button>
           </div>
         ) : (
-          <kbd className="hidden sm:flex items-center gap-1 text-xs px-2 py-0.5 rounded-lg flex-shrink-0 bg-white/5 text-slate-600 border border-white/[0.07]">
+          <kbd className="hidden sm:flex items-center gap-1 text-xs px-2 py-0.5 rounded-lg shrink-0 bg-white/5 text-slate-600 border border-white/[0.07]">
             ⌘K
           </kbd>
         )}
