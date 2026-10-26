@@ -1,44 +1,46 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react';
 
-// Custom hook: fetches 30 photos from the Picsum Photos API on mount.
-// Returns { photos, loading, error } so the Gallery component stays
-// focused on rendering while this hook owns all the data logic.
-export default function useFetchPhotos() {
-  const [photos, setPhotos] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+const useFetchPhotos = (limit = 30) => {
+  const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const controller = new AbortController()
+    const controller = new AbortController();
 
-    async function fetchPhotos() {
+    const fetchPhotos = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
-        const response = await fetch('https://picsum.photos/v2/list?limit=30', {
-          signal: controller.signal,
-        })
+        const response = await fetch(
+          `https://picsum.photos/v2/list?limit=${limit}`,
+          { signal: controller.signal }
+        );
 
         if (!response.ok) {
-          // e.g. 404 / 500 — turn HTTP failures into a real thrown error
-          throw new Error(`Request failed with status ${response.status}`)
+          throw new Error(`Failed to load photos (HTTP ${response.status}: ${response.statusText})`);
         }
 
-        const data = await response.json()
-        setPhotos(data)
-        setError(null)
+        const data = await response.json();
+        setPhotos(data);
       } catch (err) {
-        // Ignore the abort that happens when the component unmounts
         if (err.name !== 'AbortError') {
-          setError(err.message || 'Something went wrong while fetching photos.')
+          setError(err.message || 'An unexpected error occurred. Please try again.');
         }
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchPhotos()
+    fetchPhotos();
 
-    return () => controller.abort()
-  }, [])
+    return () => {
+      controller.abort();
+    };
+  }, [limit]);
 
-  return { photos, loading, error }
-}
+  return { photos, loading, error };
+};
+
+export default useFetchPhotos;
